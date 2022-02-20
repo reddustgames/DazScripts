@@ -31,6 +31,7 @@ var logPre = scriptName + ': ';
   mats.forEach(function(mat) {
     var opacityProp = mat.findPropertyByLabel("Cutout Opacity");
     var opacity = opacityProp.getValue();
+    var lumProp = mat.findPropertyByLabel("Luminance");
     var newOpacity;
 
     if (opacity < visibleOpacity) {
@@ -43,6 +44,7 @@ var logPre = scriptName + ': ';
       newOpacity = ghostOpacity;
     }
     opacityProp.setValue(newOpacity);
+    lumProp.setValue(lumProp.getValue() * opacity / newOpacity);
   });
 
   acceptUndo(scriptName);
