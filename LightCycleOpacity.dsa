@@ -8,8 +8,6 @@ var logPre = scriptName + ': ';
     return;
   }
 
-  beginUndo();
-
   print(logPre + "cycling opacity for: " + node.getLabel());
 
   var object = node.getObject();
@@ -27,6 +25,8 @@ var logPre = scriptName + ': ';
   var ghostOpacity = 0.00001;
   var visibleOpacity = 0.25;
   var fullOpacity = 1;
+
+  beginUndo();
 
   mats.forEach(function(mat) {
     var opacityProp = mat.findPropertyByLabel("Cutout Opacity");

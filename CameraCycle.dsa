@@ -1,4 +1,5 @@
-var scriptFile = new DzFile(getScriptFileName());
+var scriptName = new DzFile(getScriptFileName()).baseName();
+var logPre = scriptName + ': ';
 
 (function() {
   var viewport = MainWindow.getViewportMgr().getActiveViewport().get3DViewport();
@@ -8,8 +9,10 @@ var scriptFile = new DzFile(getScriptFileName());
     return x.getLabel().localeCompare(y.getLabel());
   });
   if (!cameras || cameras.length == 0) {
-    print(scriptFile.baseName() + ": no cameras found.");
+    print(logPre + "no cameras found");
   }
+
+  beginUndo();
 
   var idx = cameras.find(cam);
   if (idx == -1) {
@@ -19,5 +22,7 @@ var scriptFile = new DzFile(getScriptFileName());
   } else {
     viewport.setCamera(cameras[idx+1]);
   }
+
+  acceptUndo(scriptName);
 
 })();

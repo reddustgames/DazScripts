@@ -23,10 +23,10 @@ var toggleNodesVisible = function(nodes) {
 };
 
 (function() {
-  var name = 'NodeToggleVisible';
-  if (scriptFile.baseName() == name) {
+  var scriptName = "NodeToggleVisible";
+  if (scriptFile.baseName() == scriptName) {
     beginUndo();
     toggleNodesVisible(Scene.getSelectedNodeList());
-    acceptUndo(name);
+    acceptUndo(scriptName);
   }
 })();

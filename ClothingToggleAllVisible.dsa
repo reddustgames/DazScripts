@@ -1,5 +1,7 @@
 var scriptFile = new DzFile(getScriptFileName());
+var scriptName = scriptFile.baseName();
 include(scriptFile.path() + '/NodeToggleVisible.dsa');
+
 
 (function() {
 
@@ -13,6 +15,6 @@ include(scriptFile.path() + '/NodeToggleVisible.dsa');
 
   beginUndo();
   setNodesVisible(nodes, !nodes.some(isVisible));
-  acceptUndo("ClothingToggleAllVisible");
+  acceptUndo(scriptName);
 
 })();
