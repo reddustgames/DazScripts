@@ -3,7 +3,7 @@
 var scriptFile = new DzFile(getScriptFileName());
 include(scriptFile.path() + '/Utils.dsa');
 
-ToggleNodeSelectableState = (typeof ToggleNodeSelectableState === 'undefined') ? {} : ToggleNodeSelectableState;
+NodeToggleSelectableState = (typeof NodeToggleSelectableState === 'undefined') ? {} : NodeToggleSelectableState;
 
 (function() {
   var nodes = Scene.getSelectedNodeList();
@@ -17,13 +17,13 @@ ToggleNodeSelectableState = (typeof ToggleNodeSelectableState === 'undefined') ?
   beginUndo();
 
   nodes.forEach(function(o) {
-    executeNodeTree(ToggleNodeSelectableState, o, function(o) {
+    executeNodeTree(NodeToggleSelectableState, o, function(o) {
       return o.isSelectable();
     }, function(r, o) {
       o.setSelectable(!r.isSelectable());
     });
   });
 
-  acceptUndo("ToggleNodeSelectable");
+  acceptUndo("NodeToggleSelectable");
 
 })();

@@ -3,11 +3,11 @@
 var scriptFile = new DzFile(getScriptFileName());
 include(scriptFile.path() + '/Utils.dsa');
 
-ToggleNodeVisibleState = (typeof ToggleNodeVisibleState === 'undefined') ? {} : ToggleNodeVisibleState;
+NodeToggleVisibleState = (typeof NodeToggleVisibleState === 'undefined') ? {} : NodeToggleVisibleState;
 
 var setNodesVisible = function(nodes, visibility) {
   nodes.forEach(function(o) {
-    executeNodeTree(ToggleNodeVisibleState, o, isVisible, function(r, o) {
+    executeNodeTree(NodeToggleVisibleState, o, isVisible, function(r, o) {
       o.setVisible(visibility);
     });
   });
@@ -16,14 +16,14 @@ var setNodesVisible = function(nodes, visibility) {
 
 var toggleNodesVisible = function(nodes) {
   nodes.forEach(function(o) {
-    executeNodeTree(ToggleNodeVisibleState, o, isVisible, function(r, o) {
+    executeNodeTree(NodeToggleVisibleState, o, isVisible, function(r, o) {
       o.setVisible(!r.isVisible());
     });
   });
 };
 
 (function() {
-  var name = 'ToggleNodeVisible';
+  var name = 'NodeToggleVisible';
   if (scriptFile.baseName() == name) {
     beginUndo();
     toggleNodesVisible(Scene.getSelectedNodeList());

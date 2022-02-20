@@ -1,3 +1,6 @@
+var scriptName = new DzFile(getScriptFileName()).baseName();
+var logPre = scriptName + ': ';
+
 (function() {
   var node = Scene.getPrimarySelection();
   if (!node) {
@@ -7,7 +10,7 @@
 
   beginUndo();
 
-  print("Toggling ghost light for: " + node.getLabel());
+  print(logPre + "cycling opacity for: " + node.getLabel());
 
   var object = node.getObject();
   if (!object) return;
@@ -17,7 +20,7 @@
 
   var mats = shape.getAllSelectedMaterials();
   if (!mats || mats.length < 1) {
-    print("No material selected; selecting all.");
+    print(logPre + "no material selected; selecting all");
     mats = shape.getAllMaterials();
   }
 
@@ -26,8 +29,6 @@
   var fullOpacity = 1;
 
   mats.forEach(function(mat) {
-    print(mat.name);
-
     var opacityProp = mat.findPropertyByLabel("Cutout Opacity");
     var opacity = opacityProp.getValue();
     var lumProp = mat.findPropertyByLabel("Luminance");
@@ -44,11 +45,8 @@
     }
     opacityProp.setValue(newOpacity);
     lumProp.setValue(lumProp.getValue() * opacity / newOpacity);
-
   });
 
-  print("Finished toggling ghost light for: " + node.getLabel());
-
-  acceptUndo("ToggleGhostLight");
+  acceptUndo(scriptName);
 
 })();
