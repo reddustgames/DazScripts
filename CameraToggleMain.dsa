@@ -1,0 +1,12 @@
+var scriptFile = new DzFile(getScriptFileName());
+
+(function() {
+  var viewport = MainWindow.getViewportMgr().getActiveViewport().get3DViewport();
+
+  if (viewport.getCamera().getLabel() != "MainCam") {
+    viewport.setCamera(Scene.findCameraByLabel("MainCam"));
+  } else {
+    viewport.setCamera("PerspectiveView");1
+  }
+
+})();

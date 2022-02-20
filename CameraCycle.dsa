@@ -1,0 +1,23 @@
+var scriptFile = new DzFile(getScriptFileName());
+
+(function() {
+  var viewport = MainWindow.getViewportMgr().getActiveViewport().get3DViewport();
+  var cam = viewport.getCamera();
+
+  cameras = Scene.getCameraList().sort(function(x, y) {
+    return x.getLabel().localeCompare(y.getLabel());
+  });
+  if (!cameras || cameras.length == 0) {
+    print(scriptFile.baseName() + ": no cameras found.");
+  }
+
+  var idx = cameras.find(cam);
+  if (idx == -1) {
+    viewport.setCamera(cameras[0]);
+  } else if (idx == cameras.length - 1) {
+    viewport.setCamera("PerspectiveView");
+  } else {
+    viewport.setCamera(cameras[idx+1]);
+  }
+
+})();
