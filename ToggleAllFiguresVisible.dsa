@@ -1,0 +1,12 @@
+var scriptFile = new DzFile(getScriptFileName());
+include(scriptFile.path() + '/ToggleNodeVisible.dsa');
+
+(function() {
+
+  var nodes = getNodesNotParented(isCharacter);
+
+  beginUndo();
+  setNodesVisible(nodes, !nodes.some(isVisible));
+  acceptUndo("ToggleAllFiguresVisible");
+
+})();

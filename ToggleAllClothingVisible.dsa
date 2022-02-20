@@ -1,0 +1,18 @@
+var scriptFile = new DzFile(getScriptFileName());
+include(scriptFile.path() + '/ToggleNodeVisible.dsa');
+
+(function() {
+
+  var nodes = getNodesNotParented(isClothing);
+  // nodes.forEach(function(o) {
+  //   presentation = o.getPresentation();
+  //   if (presentation) {
+  //     print(presentation.type);
+  //   };
+  // });
+
+  beginUndo();
+  setNodesVisible(nodes, !nodes.some(isVisible));
+  acceptUndo("ToggleAllFiguresVisible");
+
+})();

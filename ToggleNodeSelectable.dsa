@@ -1,0 +1,29 @@
+// Derived from: http://docs.daz3d.com/doku.php/public/software/dazstudio/4/referenceguide/scripting/api_reference/samples/nodes/node_visibility_toggle/start
+
+var scriptFile = new DzFile(getScriptFileName());
+include(scriptFile.path() + '/Utils.dsa');
+
+ToggleNodeSelectableState = (typeof ToggleNodeSelectableState === 'undefined') ? {} : ToggleNodeSelectableState;
+
+(function() {
+  var nodes = Scene.getSelectedNodeList();
+  if (nodes.length < 1) {
+    MessageBox.warning("You must select one or more nodes to perform this action.",
+                       "Selection Error",
+                       "&OK",
+                       "");
+  }
+
+  beginUndo();
+
+  nodes.forEach(function(o) {
+    executeNodeTree(ToggleNodeSelectableState, o, function(o) {
+      return o.isSelectable();
+    }, function(r, o) {
+      o.setSelectable(!r.isSelectable());
+    });
+  });
+
+  acceptUndo("ToggleNodeSelectable");
+
+})();

@@ -1,0 +1,65 @@
+function executeNodeTree(state, root, cond, exec) {
+  // var isNotBone = function(o) { return !o.inherits("DzBone"); };
+  if (cond(root)) {
+    state[root.elementID] = root.getNodeChildren(true)
+    // .filter(isNotBone)
+      .filter(cond)
+      .map(function(o) { return o.elementID; });
+    root.getNodeChildren(true)
+    // .filter(isNotBone)
+      .forEach(function(o) {exec(root, o);});
+  } else {
+    (state[root.elementID] || []).forEach(function(id) {
+      var o = Scene.findNodeByElementID(id);
+      o && exec(root, o);
+    });
+  }
+  exec(root, root);
+}
+
+function getNodeParents(node) {
+  var parent = node.getNodeParent();
+  return parent == null ? [] : [parent].concat(getNodeParents(parent));
+};
+
+function getNodesNotParented(filter) {
+  var assetMgr = App.getAssetMgr();
+
+  return Scene.getNodeList().filter(function(o) {
+    presentation = o.getPresentation();
+    if (presentation) {
+      var uri = new DzUri(assetMgr.getAssetUriForNode(o));
+      print(o.getLabel() + ' : ' + uri);
+
+      print(o.getLabel() + ' : ' + JSON.stringify(assetMgr.findAssetsForFile(uri.filePath, false, true)));
+      print(o.getLabel() + ' : ' + o.assetId);
+      print(o.getLabel() + ' : ' + presentation.type);
+    };
+
+    return filter(o) && !getNodeParents(o).some(filter);
+  });
+}
+
+function isType(node, types) {
+  var types = [].concat(types || []);
+  var presentation = node.getPresentation();
+  return presentation && types.some(function(t) {
+    return presentation.type.startsWith(t);
+  });
+};
+
+function isCharacter(node) {
+  return isType(node, "Actor/Character");
+};
+
+function isHair(node) {
+  return isType(node, 'Follower/Hair');
+}
+
+function isClothing(node) {
+  return isType(node, ['Follower/Wardrobe', 'Follower/Accessory']);
+}
+
+function isVisible(node) {
+  return node.isVisible();
+}
