@@ -1,0 +1,4 @@
+(function() {
+  Scene.selectAllNodes(false);
+  Scene.findCameraByLabel("MainCam").select(true);
+})();
