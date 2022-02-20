@@ -5,10 +5,10 @@ var scriptName = new DzFile(getScriptFileName()).baseName();
 
   beginUndo();
 
-  if (viewport.getCamera().getLabel() != "MainCam") {
-    viewport.setCamera(Scene.findCameraByLabel("MainCam"));
+  if (viewport.getCamera().getLabel() != "Perspective View") {
+    viewport.setCamera("PerspectiveView");
   } else {
-    viewport.setCamera("PerspectiveView");1
+    viewport.setCamera(Scene.findCameraByLabel("MainCam"));
   }
 
   acceptUndo(scriptName);

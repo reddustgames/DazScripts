@@ -14,9 +14,13 @@ var logPre = scriptName + ': ';
 
   beginUndo();
 
-  var idx = cameras.find(cam);
+  var idx = cameras.indexOf(cam);
   if (idx == -1) {
-    viewport.setCamera(cameras[0]);
+    if (cam.getLabel() == "Perspective View") {
+      viewport.setCamera(cameras[0]);
+    } else {
+      viewport.setCamera("PerspectiveView");
+    }
   } else if (idx == cameras.length - 1) {
     viewport.setCamera("PerspectiveView");
   } else {
