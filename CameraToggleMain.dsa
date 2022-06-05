@@ -7,8 +7,10 @@ var scriptName = new DzFile(getScriptFileName()).baseName();
 
   if (viewport.getCamera().getLabel() != "Perspective View") {
     viewport.setCamera("PerspectiveView");
+    viewport.aspectOn = false;
   } else {
     viewport.setCamera(Scene.findCameraByLabel("MainCam"));
+    viewport.aspectOn = true;
   }
 
   acceptUndo(scriptName);
