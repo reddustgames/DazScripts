@@ -1,0 +1,64 @@
+// Based on script by cwichura
+// https://www.daz3d.com/forums/discussion/43636/set-focal-distance-script
+
+var scriptName = new DzFile(getScriptFileName()).baseName();
+var logPre = scriptName + ': ';
+
+function distance(camera, target) {
+  var cameraPosVec = camera.getWSPos();
+  var cameraRotQuat = camera.getWSRot();
+  var targetPosVec = target.getWSPos();
+
+  // location of target normalized to a camera located at 0,0,0
+  var d = targetPosVec.x - cameraPosVec.x;
+  var e = targetPosVec.y - cameraPosVec.y;
+  var f = targetPosVec.z - cameraPosVec.z;
+
+  // vector camera is facing in radians
+  var vecFacing = cameraRotQuat.getValue(0,1,2);
+  var x = vecFacing.x;
+  var y = vecFacing.y;
+  var z = vecFacing.z;
+
+  // calculate distance
+  var c1 = Math.cos(x);
+  var c2 = Math.cos(-y);
+  var c3 = Math.cos(z);
+  var s1 = Math.sin(x);
+  var s2 = Math.sin(-y);
+  var s3 = Math.sin(z);
+  var u = c1*s2*c3 - s1*s3;
+  var v = c1*s2*s3 + s1*c3;
+  var w = -c1*c2;
+
+  var dist = d*u + e*v + f*w;
+
+  return Math.round(dist * 1000) / 1000;
+}
+
+(function() {
+  var camera = Scene.findCameraByLabel("MainCam");
+  if (!camera) return;
+
+  var selected = Scene.getPrimarySelection();
+  if (!selected) return;
+
+  var leftEye = selected.findNodeChildByLabel("Left Eye", true);
+  var rightEye = selected.findNodeChildByLabel("Right Eye", true);
+  var target;
+  var targetDistance = 1000000;
+  [leftEye, rightEye].forEach(function(node){
+    if (node) {
+      var d = distance(camera, node);
+      if (d > 0 && d < targetDistance) {
+        target = node;
+        targetDistance = d;
+      }
+    }
+  });
+  if (!target) return;
+
+  beginUndo();
+  camera.focalDistance = targetDistance;
+  acceptUndo(scriptName);
+})();
