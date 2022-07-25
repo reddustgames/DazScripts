@@ -11,7 +11,7 @@ var scriptName = new DzFile(getScriptFileName()).baseName();
   } else {
     var mainCam = Scene.findCameraByLabel("MainCam");
     if (mainCam) {
-      viewport.setCamera();
+      viewport.setCamera(mainCam);
       viewport.aspectOn = true;
     }
   }
