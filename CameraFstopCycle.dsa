@@ -1,0 +1,23 @@
+var scriptName = new DzFile(getScriptFileName()).baseName();
+
+(function() {
+  var camera = Scene.findCameraByLabel("MainCam");
+  if (!camera) return;
+
+  var fstops = [16, 32, 64, 96, 128, 256];
+  var newFstop = camera.fStop;
+  for (var i = 0; i < fstops.length; i++) {
+    if (camera.fStop < fstops[i]) {
+      newFstop = fstops[i];
+      break;
+    }
+    if (camera.fStop >= Math.max.apply(Math, fstops)) {
+      newFstop = Math.min.apply(Math, fstops);
+      break;
+    }
+  }
+
+  beginUndo();
+  camera.fStop = newFstop;
+  acceptUndo(scriptName);
+})();
