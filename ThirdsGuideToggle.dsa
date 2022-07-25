@@ -1,0 +1,8 @@
+var scriptName = new DzFile(getScriptFileName()).baseName();
+
+(function() {
+  var viewport3d = MainWindow.getViewportMgr().getActiveViewport().get3DViewport();
+  beginUndo();
+  viewport3d.thirdsGuideOn = !viewport3d.thirdsGuideOn;
+  acceptUndo(scriptName);
+})();
