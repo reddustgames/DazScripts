@@ -37,8 +37,9 @@ function distance(camera, target) {
 }
 
 (function() {
-  var camera = Scene.findCameraByLabel("MainCam");
-  if (!camera) return;
+  var camera = MainWindow.getViewportMgr().getActiveViewport().get3DViewport().getCamera();
+  // var camera = Scene.findCameraByLabel("MainCam");
+  if (!camera || (camera.getLabel() == "Perspective View")) return;
 
   var selected = Scene.getPrimarySelection();
   if (!selected) return;
