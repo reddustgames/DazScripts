@@ -1,3 +1,16 @@
+function getBounds(l, v) {
+  var lower = l[l.length-1];
+  var upper;
+  for (i = 0; i < l.length; i++) {
+    if (v <= l[i]) {
+      lower = l[i-1];
+      upper = v < l[i] ? l[i] : l[i+1];
+      break;
+    }
+  }
+  return [lower, upper];
+}
+
 function executeNodeTree(state, root, cond, exec) {
   // var isNotBone = function(o) { return !o.inherits("DzBone"); };
   if (cond(root)) {

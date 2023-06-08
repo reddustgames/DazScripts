@@ -1,0 +1,24 @@
+var scriptFile = new DzFile(getScriptFileName());
+var scriptName = scriptFile.baseName();
+var logPre = scriptName + ': ';
+
+include(scriptFile.path() + '/LuminanceUtils.dsa');
+
+(function() {
+  var mats = getLuminanceMats();
+  if (!mats || mats.length < 1) return;
+
+  beginUndo();
+
+  mats.forEach(function(mat) {
+    var luminanceProp = mat.findPropertyByLabel("Luminance");
+    var luminance = luminanceProp.getValue();
+    var bounds = getBounds(luminances, luminance);
+    if (!(bounds[0] === undefined)) {
+      luminanceProp.setValue(bounds[0]);
+    };
+  });
+
+  acceptUndo(scriptName);
+
+})();
